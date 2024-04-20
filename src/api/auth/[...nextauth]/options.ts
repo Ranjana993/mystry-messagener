@@ -9,15 +9,12 @@ import { NextAuthOptions } from "next-auth";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "credentials",
-      name: "credentials",
+      id: "Credentials",
+      name: "Credentials",
       credentials: {
         email: { label: "email", type: "text" },
         password: { label: "password", type: "password" }
       },
-
-
-
 
       async authorize(credentials: any): Promise<any> {
         await dbConnect()
@@ -45,19 +42,12 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Incorrect password")
           }
 
-          // return user;
         } catch (error: any) {
           throw new Error(error)
         }
       }
     })
   ],
-  pages: {
-    signIn: "/sign-in"
-  },
-  session: { strategy: "jwt" },
-  secret: process.env.NEXT_AUTH_SECRET_KEY
-  ,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -74,11 +64,15 @@ export const authOptions: NextAuthOptions = {
         session.user.isVerified = token.isVerified
         session.user.isAcceptingMessages = token.isAcceptingMessages
         session.user.username = token.username
-
       }
       return session
     }
-  }
+  },
+  pages: {
+    signIn: "/sign-in"
+  },
+  session: { strategy: "jwt" },
+  secret: process.env.NEXT_AUTH_SECRET_KEY
 }
 
 
