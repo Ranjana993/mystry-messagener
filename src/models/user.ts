@@ -4,18 +4,6 @@ export interface Message extends Document {
   content: string;
   createdAt: Date
 }
-
-export interface User extends Document {
-  username: string;
-  email: string;
-  password: string;
-  verifyCode: string;
-  isVerified:boolean;
-  verifyCodeExpiry: Date;
-  isAcceptingMessages: boolean;
-  messages: Message[]
-}
-
 const messageSchema: Schema<Message> = new Schema({
   content: {
     type: String,
@@ -27,7 +15,16 @@ const messageSchema: Schema<Message> = new Schema({
     default: Date.now
   }
 })
-
+export interface User extends Document {
+  username: string;
+  email: string;
+  password: string;
+  verifyCode: string;
+  isVerified:boolean;
+  verifyCodeExpiry: Date;
+  isAcceptingMessages: boolean;
+  messages: Message[]
+}
 
 const userSchema: Schema<User> = new Schema({
   username: {
