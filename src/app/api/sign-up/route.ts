@@ -1,7 +1,8 @@
 import userModel from "@/models/user"
 import bcrypt from "bcryptjs"
-import { sendVerificationEmail } from "@/utils/sendVerificationEmail"
+// import { sendVerificationEmail } from "@/utils/sendVerificationEmail"
 import { dbConnect } from "@/lib/dbConnection";
+import { sendVerificationEmail } from "@/utils/sendVerificationEmail";
 
 
 
@@ -9,6 +10,8 @@ export async function POST(req: Request) {
   await dbConnect()
   try {
     const data = await req.json();
+    console.log(data);
+    
     const { username, email, password } = data;
     const existingUserVerifiedByUserName = await userModel.findOne({
       username, isVerified: true
@@ -61,7 +64,8 @@ export async function POST(req: Request) {
     }
     // send verification email
     const emailRes = await sendVerificationEmail({ email, username, verifyCode })
-
+    console.log("emailRes", emailRes);
+    
     if (!emailRes.success) {
       return Response.json({
         success: false,
@@ -81,10 +85,10 @@ export async function POST(req: Request) {
       }
     )
   } catch (error) {
-    console.log("Error while regestering user ");
+    console.log("Error while regestering user ",  error);
     return Response.json({
       success: false,
-      mesasge: "error while regestering user",
+      mesasge: "error while regestering user", 
     },
       {
         status: 500
